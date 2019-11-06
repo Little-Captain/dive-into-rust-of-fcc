@@ -11,6 +11,11 @@ fn main2() {
     first::def_variable();
     first::shadowing_var();
     first::shadowing_var1();
+    first::infer_type();
+    first::infer_type2();
+    first::type_alias();
+    first::use_global();
+    first::const_var();
 }
 
 fn main() {
