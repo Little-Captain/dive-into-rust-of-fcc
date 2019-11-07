@@ -22,6 +22,8 @@ fn main2_2() {
     use dive_into_rust_of_fcc::ch02::second;
     second::learn_bool();
     second::learn_char();
+    second::integer_type();
+    second::integer_overflow();
 }
 
 fn main() {
