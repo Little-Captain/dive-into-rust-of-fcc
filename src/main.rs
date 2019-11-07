@@ -6,7 +6,7 @@ fn main1() {
     first::print();
 }
 
-fn main2() {
+fn main2_1() {
     use dive_into_rust_of_fcc::ch02::first;
     first::def_variable();
     first::shadowing_var();
@@ -18,6 +18,12 @@ fn main2() {
     first::const_var();
 }
 
+fn main2_2() {
+    use dive_into_rust_of_fcc::ch02::second;
+    second::learn_bool();
+    second::learn_char();
+}
+
 fn main() {
-    main2();
+    main2_2();
 }

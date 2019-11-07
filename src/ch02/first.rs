@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 /// # 变量声明
 pub fn def_variable() {
     let variable: i32 = 100;
