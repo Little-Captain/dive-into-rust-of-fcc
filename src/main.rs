@@ -24,6 +24,7 @@ fn main2_2() {
     second::learn_char();
     second::integer_type();
     second::integer_overflow();
+    second::float_type()
 }
 
 fn main() {

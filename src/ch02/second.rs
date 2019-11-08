@@ -120,3 +120,92 @@ pub fn integer_overflow() {
     let sum = big + Wrapping(1_u32);
     println!("{}", sum);
 }
+
+pub fn float_type() {
+    let f1 = 123.0f64;
+    let f2 = 0.1f64;
+    let f3 = 0.1f32;
+    let f4 = 12E+99_f64;
+    let f5: f64 = 2.;
+    println!("{} {} {} {} {}", f1, f2, f3, f4, f5);
+    // 与整数类型相比， Rust 的浮点数类型相对复杂得多
+    // 浮点数的麻烦之处在于：它不仅可以表达正常的数值，还可以表达不正常的数值。
+    // 在标准库中，有一个 std::num::FpCategory 枚举，表示了浮点数可能的状态：
+    // enum FpCategory {
+    //     Nan,
+    //     Infinite,
+    //     Zero,
+    //     Subnormal,
+    //     Normal,
+    // }
+    // 演示 Subnormal
+    // 变量 small 初始化为一个非常小的浮点数
+    let mut small = std::f32::EPSILON;
+    // 不断循环， 让 small 越来越趋近于 0 ， 直到最后等于 0 的状态
+    while small > 0.0 {
+        small = small / 2.0;
+        println!("{} {:?}", small, small.classify());
+    }
+    // 演示 Infinite Nan
+    let x = 1.0f32 /0.0;
+    let y = 0.0f32 /0.0;
+    println!("{} {}", x, y);
+    // inf 数学运算
+    let inf = std::f32::INFINITY;
+    println!("{} {} {}", inf * 0.0, 1.0 / inf, inf / inf);
+    // NaN 这个特殊值有个特殊的麻烦，主要问题还在于它不具备"全序"的特点
+    let nan = std::f32::NAN;
+    println!("{} {} {}", nan < nan, nan > nan, nan == nan)
+    // 一个数字可以不等于自己
+    // 因为 NaN 的存在，浮点数是不具备"全序关系"(total order)的
+    // 全序/偏序 Ord/PartialOrd
+}
+
+pub fn point_type() {
+    // 无 GC 的编程语言，如 C 、C++ 以及 Rust，对数据的组织操作有更多的自由度，具体表现为：
+    // 1. 同一个类型，某些时候可以指定它在栈上，某些时候可以指定它在堆上。
+    //    内存分配方式可以取决于使用方式，与类型本身无关。
+    // 2. 既可以直接访问数据，也可以通过指针间接访问数据。可以针对任何一个对象取得指向它的指针。
+    // 3. 既可以在复合数据类型中直接嵌入别的类型的实体，也可以使用指针，间接指向别的类型。
+    // 4. 甚至可能在复合数据类型末尾嵌入不定长数据构造出不定长的复合数据类型。
+    // Rust 里面也有指针类型，而且不止一种指针类型。
+    // 1. Box<T>        指向类型 T 的、具有所有权的指针，有权释放内存
+    // 2. &T            指向类型 T 的借用指针，也称为引用，无权释放内存，无权写数据
+    // 3. &mut T        指向类型 T 的 mut 型借用指针，无权释放内存，有权写数据
+    // 4. *const T      指向类型 T 的只读裸指针，没有生命周期信息，无权写数据
+    // 5. *mut T        指向类型 T 的可读写裸指针，没有生命周期信息，有权写数据
+    // 在标准库中还有一种封装起来的可以当作指针使用的类型，叫"智能指针"(smart pointer)。
+    // 1. Rc<T>         指向类型 T 的引用计数指针，共享所有权，线程不安全
+    // 2. Arc<T>        指向类型 T 的原子型引用计数指针，共享所有权，线程安全
+    // 3. Cow<'a, T>    Clone-on-write，写时复制指针。可能是借用指针也可能是具有所有权的指针
+}
+
+pub fn type_case() {
+    // 类型转换
+    // Rust 对不同类型之间的转换控制得非常严格
+    // Rust 提供了一个关键字 as
+    let var1: i8 = 41;
+    let var2: i16 = var1 as i16;
+    // as 关键字也不是随便可以用的，它只允许编译器认为合理的类型转换。任意类型转换是不允许的
+    let a = "some string";
+    // let b = a as u32; // 编译错误
+    // 有些时候， 甚至需要连续写多个as 才能转成功
+    let i = 42;
+    // 先转为＊ c onst i32 ， 再转为＊ mut i32
+    let p = &i as *const i32 as *mut i32;
+    println!("{:p}", p);
+    // 如果需要更复杂的类型转换，一般是使用标准库的 From Into 等 trait
+    // e as U
+    // e: 表达式; U: 目标类型
+    // Type of e                           U
+    // Integer of Float type               Integer or Float type
+    // C-like enum                         Integer type
+    // bool or char                        Integer type
+    // u8                                  char
+    // *T                                  *V where V: Sized *
+    // *T where T: Sized                   Numeric type
+    // Integer type                        *V where V: Sized
+    // &[T; n]                             *const T
+    // Function pointer                    *V where T: Sized
+    // Function pointer                    Integer
+}
