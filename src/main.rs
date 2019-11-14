@@ -27,6 +27,11 @@ fn main2_2() {
     second::float_type()
 }
 
+fn main2_3() {
+    use dive_into_rust_of_fcc::ch02::third;
+    third::learn_tuple();
+}
+
 fn main() {
-    main2_2();
+    main2_3();
 }
