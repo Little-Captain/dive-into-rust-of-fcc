@@ -30,6 +30,8 @@ fn main2_2() {
 fn main2_3() {
     use dive_into_rust_of_fcc::ch02::third;
     third::learn_tuple();
+    third::learn_struct();
+    third::learn_tuple_struct();
 }
 
 fn main() {
