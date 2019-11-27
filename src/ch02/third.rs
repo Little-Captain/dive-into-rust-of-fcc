@@ -165,6 +165,85 @@ pub fn learn_enum() {
     // Rust 的 enum 中的每个元素的定义语法与 struct 的定义语法类似
     // 可以像空结构体一样，不指定它的类型；也可以像 tuple struct 一样，
     // 用圆括号加无名成员；还可以像正常结构体一样，用大括号加带名字的成员。
+    // 用 enum 把这些类型包含到一起之后，就组成了一个新的类型。
+    // 要使用 enum ，一般要用到"模式匹配"
+    fn read_num(num: &Number) {
+        match num {
+            // 如果匹配了 Number::Int，那么 value 的类型就是 i32
+            &Number::Int(value) => println!("Integer {}", value),
+            // 如果匹配了 Number::Float，那么 value 的类型就是 f32
+            &Number::Float(value) => println!("Integer {}", value),
+        }
+    }
+    let n: Number = Number::Int(10);
+    read_num(&n);
+    // Rust 的 enum 与 C/C++ 的 enum 和 union 都不一样
+    // 它是一种更安全的类型，可以被称为"tagged union"
+
+    // 输出内存空间大小
+    println!("Size of Number: {}", std::mem::size_of::<Number>());
+    println!("Size of i32: {}", std::mem::size_of::<i32>());
+    println!("Size of f32: {}", std::mem::size_of::<f32>());
+
+    // Rust 里面也支持 union 类型，这个类型与 C 语言中的 union 完全一致。
+    // 但在 Rust 里面，读取它内部的值被认为是 unsafe 行为，一般情况下我们
+    // 不使用这种类型。它存在的主要目的是为了方便与 C 语言进行交互。
+
+    // 在 Rust 中， enum 和 struct 为内部成员创建了新的名字空间。
+    // 如果要访问内部成员，可以使用 :: 符号。因此，不同的 enum 中
+    // 重名的元素也不会互相冲突。例如在下面的程序中，两个枚举内部都
+    // 有 Move 这个成员，但是它们不会有冲突。
+    enum Message {
+        Quit,
+        ChangeColor(i32, i32, i32),
+        Move { x: i32, y: i32},
+        Write(String),
+    }
+
+    let x: Message = Message::Move { x: 3, y: 4};
+
+    enum BoardGameTurn {
+        Move { squares: i32 },
+        Pass,
+    }
+
+    let y: BoardGameTurn = BoardGameTurn::Move { squares: 1 };
+
+    enum Animal {
+        dog = 1,
+        cat = 200,
+        tiger,
+    }
+    let x = Animal::tiger as isize;
+    println!("{}", x);
+
+    // Rust 标准库中有一个极其常用的 enum 类型 Option<T>
+    // enum Option<T> {
+    //     None,
+    //     Some(T),
+    // }
+    // 由于它实在是太常用，标准库将 Option 以及它的成员 Some 、None 都加入到了 Prelude 中，
+    // 用户甚至不需要 use 语句声明就可以直接使用。它表示的含义是"要么存在、要么不存在"
+
+    // Rust 的 enum 实际上是一种代数类型系统(Algebraic Data Type, ADT)
+    // enum 内部的 variant 只是一个名字而己，恰好我们还可以将这个名字作为
+    // `类型构造器`使用。意思是说，我们可以把 enum 内部的 variant 当成一个`函数`使用
+    let arr = [1, 2, 3, 4, 5];
+    let v: Vec<Option<&i32>> = arr.iter().map(Some).collect();
+    println!("{:?}", v);
+    // 证明 Some 确实是一个函数类型，
+    // 我们把 Some 初始化给一个 unit 变量，产生一个编译错误
+    // let _: () = Some;
+    // enum 内部的 variant 的类型确实是函数类型
 }
 
 // 类型递归定义
+pub fn learn_recursive() {
+    // Rust 里面的复合数据类型是允许递归定义的
+    // struct 里面嵌套同样的 struct 类型，直接嵌套是不行的
+    struct Recursive {
+        data: i32,
+        // rec: Recursive,
+        rec: Box<Recursive>, // 把产生了递归的那个成员类型改为了指针
+    }
+}

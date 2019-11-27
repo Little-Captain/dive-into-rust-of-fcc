@@ -32,6 +32,7 @@ fn main2_3() {
     third::learn_tuple();
     third::learn_struct();
     third::learn_tuple_struct();
+    third::learn_enum();
 }
 
 fn main() {
