@@ -53,6 +53,14 @@ fn main3_2() {
     second::learn_for();
 }
 
+fn main4_1() {
+    use dive_into_rust_of_fcc::ch04::first;
+    first::first();
+    first::test_inner();
+    // first::learn_diverging_func();
+    first::learn_main_fn();
+}
+
 fn main() {
-    main3_2();
+    main4_1();
 }
