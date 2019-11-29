@@ -63,6 +63,13 @@ fn main4_1() {
     first::learn_recursion();
 }
 
+fn main5_1() {
+    use dive_into_rust_of_fcc::ch05::first;
+    first::trait1();
+    first::trait2();
+    first::trait3();
+}
+
 fn main() {
-    main4_1();
+    main5_1();
 }
