@@ -35,6 +35,24 @@ fn main2_3() {
     third::learn_enum();
 }
 
+fn main3_1() {
+    use dive_into_rust_of_fcc::ch03::first;
+    first::learn_operator();
+    first::learn_bit_op();
+    first::learn_bool_op();
+    first::learn_assign();
+    first::learn_statement_block();
+}
+
+fn main3_2() {
+    use dive_into_rust_of_fcc::ch03::second;
+    second::learn_if_else();
+    second::learn_loop();
+    second::learn_break_continue();
+    second::learn_while();
+    second::learn_for();
+}
+
 fn main() {
-    main2_3();
+    main3_2();
 }

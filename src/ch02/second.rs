@@ -147,8 +147,8 @@ pub fn float_type() {
         println!("{} {:?}", small, small.classify());
     }
     // 演示 Infinite Nan
-    let x = 1.0f32 /0.0;
-    let y = 0.0f32 /0.0;
+    let x = 1.0f32 / 0.0;
+    let y = 0.0f32 / 0.0;
     println!("{} {}", x, y);
     // inf 数学运算
     let inf = std::f32::INFINITY;

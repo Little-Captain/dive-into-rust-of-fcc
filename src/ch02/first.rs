@@ -174,4 +174,3 @@ pub fn const_var() {
     // 以 const 声明一个常量, 也不具备类似 let 语句的模式匹配功能
     println!("{}", GLOBAL);
 }
-
