@@ -118,3 +118,18 @@ pub fn learn_const_fn() {
 
     println!("{:?}", ARR);
 }
+
+pub fn learn_recursion() {
+    // 函数递归调用
+    // 所谓递归调用，指的是函数直接或者间接调用自己
+    fn fib(index: u32) -> u64 {
+        if index == 1 || index == 2 {
+            1
+        } else {
+            fib(index - 1) + fib(index - 2)
+        }
+    }
+
+    let f8 = fib(8);
+    println!("{}", f8);
+}

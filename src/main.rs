@@ -59,6 +59,8 @@ fn main4_1() {
     first::test_inner();
     // first::learn_diverging_func();
     first::learn_main_fn();
+    first::learn_const_fn();
+    first::learn_recursion();
 }
 
 fn main() {
