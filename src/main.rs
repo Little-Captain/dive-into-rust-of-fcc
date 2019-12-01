@@ -66,10 +66,12 @@ fn main4_1() {
 fn main5_1() {
     use dive_into_rust_of_fcc::ch05::first;
     use dive_into_rust_of_fcc::ch05::second;
+    use dive_into_rust_of_fcc::ch05::third;
     first::trait1();
     first::trait2();
     first::trait3();
     second::learn_static_method();
+    third::learn_extension();
 }
 
 fn main() {
