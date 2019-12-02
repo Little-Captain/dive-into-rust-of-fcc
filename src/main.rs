@@ -68,6 +68,7 @@ fn main5_1() {
     use dive_into_rust_of_fcc::ch05::second;
     use dive_into_rust_of_fcc::ch05::third;
     use dive_into_rust_of_fcc::ch05::fourth;
+    use dive_into_rust_of_fcc::ch05::fifth;
     first::trait1();
     first::trait2();
     first::trait3();
@@ -75,6 +76,7 @@ fn main5_1() {
     third::learn_extension();
     fourth::learn_call_func();
     fourth::learn_call_func1();
+    fifth::learn_trait1();
 }
 
 fn main() {
