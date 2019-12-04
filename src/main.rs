@@ -81,6 +81,7 @@ fn main5_1() {
     fifth::learn_trait1();
     sixth::learn_derive();
     eighth::learn_display_debug();
+    eighth::learn_float();
 }
 
 fn main() {
