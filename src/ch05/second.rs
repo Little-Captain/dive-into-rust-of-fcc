@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 
 // 静态方法
 // 没有 receiver 参数的方法(第一个参数不是 self 参数的方法)称作"静态方法"

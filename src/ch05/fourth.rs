@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 
 // Fully Qualified Syntax 提供一种无歧义的函数调用语法，允许程序员精确地
 // 指定想调用的是那个函数。以前也叫 UFCS(universal function call syntax)，

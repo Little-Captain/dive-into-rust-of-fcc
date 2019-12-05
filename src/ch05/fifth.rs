@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 // trait 约束和继承
 
 // Rust 的 trait 的另外一个大用处是，作为泛型约束使用

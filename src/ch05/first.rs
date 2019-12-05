@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 
 // trait
 // trait 中可以包含：函数、常量、类型等

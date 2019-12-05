@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 
 fn func(n: i32) -> bool {
     if n < 0 {

@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 
 fn main1() {
     use dive_into_rust_of_fcc::ch01::first;
@@ -84,6 +84,21 @@ fn main5_1() {
     eighth::learn_float();
 }
 
+fn main6_1() {
+    use dive_into_rust_of_fcc::ch06::first;
+    first::learn_array1();
+    first::learn_array2();
+    first::learn_array3();
+    first::learn_array4();
+    first::learn_array5();
+    first::learn_array6();
+    first::learn_array7();
+    first::learn_array8();
+    first::learn_array9();
+    first::learn_array10();
+    first::learn_array11();
+}
+
 fn main() {
-    main5_1();
+    main6_1();
 }

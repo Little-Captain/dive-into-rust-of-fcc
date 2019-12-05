@@ -1,4 +1,4 @@
-#[allow(dead_code)]
+#![allow(dead_code)]
 // Derive
 
 // Rust 里面为类型 impl 某些 trait 的时候，逻辑是非常机械化的
