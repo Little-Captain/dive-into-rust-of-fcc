@@ -86,6 +86,7 @@ fn main5_1() {
 
 fn main6_1() {
     use dive_into_rust_of_fcc::ch06::first;
+    use dive_into_rust_of_fcc::ch06::second;
     first::learn_array1();
     first::learn_array2();
     first::learn_array3();
@@ -97,6 +98,9 @@ fn main6_1() {
     first::learn_array9();
     first::learn_array10();
     first::learn_array11();
+    second::learn_str1();
+    second::learn_string1();
+    second::learn_string2();
 }
 
 fn main() {
