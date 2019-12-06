@@ -103,6 +103,12 @@ fn main6_1() {
     second::learn_string2();
 }
 
+fn main7_1() {
+    use dive_into_rust_of_fcc::ch07::first;
+    first::destructure1();
+    first::destructure2();
+}
+
 fn main() {
-    main6_1();
+    main7_1();
 }
