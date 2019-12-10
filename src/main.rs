@@ -64,13 +64,13 @@ fn main4_1() {
 }
 
 fn main5_1() {
-    use dive_into_rust_of_fcc::ch05::first;
-    use dive_into_rust_of_fcc::ch05::second;
-    use dive_into_rust_of_fcc::ch05::third;
-    use dive_into_rust_of_fcc::ch05::fourth;
-    use dive_into_rust_of_fcc::ch05::fifth;
-    use dive_into_rust_of_fcc::ch05::sixth;
     use dive_into_rust_of_fcc::ch05::eighth;
+    use dive_into_rust_of_fcc::ch05::fifth;
+    use dive_into_rust_of_fcc::ch05::first;
+    use dive_into_rust_of_fcc::ch05::fourth;
+    use dive_into_rust_of_fcc::ch05::second;
+    use dive_into_rust_of_fcc::ch05::sixth;
+    use dive_into_rust_of_fcc::ch05::third;
     first::trait1();
     first::trait2();
     first::trait3();
@@ -105,8 +105,13 @@ fn main6_1() {
 
 fn main7_1() {
     use dive_into_rust_of_fcc::ch07::first;
+    use dive_into_rust_of_fcc::ch07::second;
     first::destructure1();
     first::destructure2();
+    second::first();
+    second::second();
+    second::third();
+    second::fourth();
 }
 
 fn main() {

@@ -69,8 +69,7 @@ fn get3(t: &T) -> usize {
     t.0
 }
 
-fn check_type(_: fn(&T) -> usize) {
-}
+fn check_type(_: fn(&T) -> usize) {}
 
 pub fn learn_call_func1() {
     // get1、get2 和 get3 都可以自动转成 fn(&T）-> usize 类型

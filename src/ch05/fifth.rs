@@ -41,6 +41,6 @@ trait Derived: Base {}
 // 在针对一个具体类型 impl Derived 的时候，
 // 编译器也会要求我们同时 impl Base
 // 实际上，在编译器的眼中，trait Derived: Base {} 等同于
-// trait Derived where Self: Base {} 
+// trait Derived where Self: Base {}
 // 这两种写法没有本质上的区别，都是给 Derived 这个 trait 加了一个约束条件
 // 即实现 Derived trait 的具体类型，也必须满足 Base trait 的约束

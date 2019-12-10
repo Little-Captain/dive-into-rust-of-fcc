@@ -15,7 +15,7 @@ impl Double for i32 {
 }
 
 pub fn learn_extension() {
-    let x : i32 = 10.double();
+    let x: i32 = 10.double();
     println!("{}", x);
 }
 

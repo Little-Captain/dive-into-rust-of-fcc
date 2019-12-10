@@ -85,7 +85,7 @@ pub fn learn_main_fn() {
     // Rust 的设计稍微有点不一样，传递参数和返回状态码都由单独的 API 来完成
     for arg in std::env::args() {
         match std::env::var(&arg) {
-            Ok(val) =>println!("{}: {:?}", &arg, val),
+            Ok(val) => println!("{}: {:?}", &arg, val),
             Err(e) => println!("couldn't find environment {}, {}", &arg, e),
         }
         println!("Arg: {}", arg);

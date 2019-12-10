@@ -57,8 +57,8 @@ pub fn learn_display_debug() {
 pub fn learn_float() {
     let nan = std::f32::NAN;
     let x = 1.0f32;
-    println!("{}", nan < x);  // false
-    println!("{}", nan > x);  // false
+    println!("{}", nan < x); // false
+    println!("{}", nan > x); // false
     println!("{}", nan == x); // false
 }
 // Rust 设计了两个 trait 来描述这样的状态:
