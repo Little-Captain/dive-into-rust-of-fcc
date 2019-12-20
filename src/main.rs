@@ -112,6 +112,7 @@ fn main7_1() {
     second::second();
     second::third();
     second::fourth();
+    second::fifth();
 }
 
 fn main() {

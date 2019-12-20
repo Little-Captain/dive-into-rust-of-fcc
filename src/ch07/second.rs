@@ -153,3 +153,49 @@ pub fn fourth() {
         _ => println!("something else"),
     }
 }
+
+// Guards
+// 可以使用 if 作为“匹配看守”(match guards)
+// 当匹配成功且符合 if 条件，才执行后面的语句
+pub fn fifth() {
+    enum OptionalInt {
+        Value(i32),
+        Missing,
+    }
+
+    let x = OptionalInt::Value(5);
+
+    match x {
+        OptionalInt::Value(i) if i > 5 => println!("Got an int bigger than five!"),
+        OptionalInt::Value(..) => println!("Got an int!"),
+        OptionalInt::Missing => println!("No such luck."),
+    }
+
+    // 在对变量的“值”进行匹配的时候，编译器依然会保证“完整无遗漏”检查
+    // 但是这个检查目前做得并不是很完美，某些情况下会发生误报的情况
+    // 因为毕竟编译器内部并没有一个完整的数学解算功能
+
+    let x = 10;
+
+    match x {
+        i if i > 5 => println!("bigger than five"),
+        i if i <= 5 => println!("small or equal to five"),
+        // 从 if 条件中可以看到，实际上我们已经覆盖了所有情况，可惜还是出现了编译错误
+        // 编译器目前还无法完美地处理这样的情况
+        _ => unreachable!(),
+    }
+
+    // 编译器会保证 match 的所有分支合起来一定覆盖了目标的所有可能取值范围
+    // 但是并不会保证各个分支是否会有重叠的情况(毕竟编译器不想做成一个完整的数学解算器)
+    // 如果不同分支覆盖范围出现了重叠，各个分支之间的先后顺序就有影响了
+
+    let x = -1;
+
+    // 如果我们进行匹配的值同时符合好几条分支，那么总会执行第一条匹配成功的分支，忽略其他分支
+    match x {
+        i if i * i < 1000 => println!("case 3"),
+        i if i < 10 => println!("case 2"),
+        i if i < 0 => println!("case 1"),
+        _ => println!("default case"),
+    }
+}
