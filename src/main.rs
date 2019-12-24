@@ -106,6 +106,7 @@ fn main6_1() {
 fn main7_1() {
     use dive_into_rust_of_fcc::ch07::first;
     use dive_into_rust_of_fcc::ch07::second;
+    use dive_into_rust_of_fcc::ch07::third;
     first::destructure1();
     first::destructure2();
     second::first();
@@ -113,6 +114,10 @@ fn main7_1() {
     second::third();
     second::fourth();
     second::fifth();
+    second::sixth();
+    second::seventh();
+    third::first();
+    third::second();
 }
 
 fn main() {

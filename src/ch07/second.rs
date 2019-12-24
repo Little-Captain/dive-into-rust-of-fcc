@@ -199,3 +199,98 @@ pub fn fifth() {
         _ => println!("default case"),
     }
 }
+
+// 变量绑定
+// 可以使用 @ 符号绑定变量。@ 符号前面是新声明的变量，后面是需要匹配的模式
+pub fn sixth() {
+    let x = 1;
+
+    match x {
+        e @ 1..=5 => println!("got a range element {}", e),
+        _ => println!("anything"),
+    }
+
+    fn deep_match(v: Option<Option<i32>>) -> Option<i32> {
+        match v {
+            // r 绑定到的是第一层 Option 内部，r 的类型是 Option<i32>
+            // 与这种写法含义不一样：Some(Some(r)) if (1..10).contains(r)
+            Some(r @ Some(1..=9)) => r,
+            _ => None,
+        }
+    }
+
+    let x = Some(Some(5));
+    println!("{:?}", deep_match(x));
+
+    let y = Some(Some(105));
+    println!("{:?}", deep_match(y));
+
+    // 如果在使用自的同时使用｜，需要保证在每个条件上都绑定这个名字
+    let x = 5;
+    match x {
+        e @ 1..=4 | e @ 8..=9 => println!("got a range element {}", e),
+        _ => println!("anything"),
+    }
+}
+
+// ref 和 mut
+// 如果我们需要绑定的是被匹配对象的引用，则可以使用 ref 关键字
+
+pub fn seventh() {
+    let x = 5_i32;
+
+    match x {
+        // 之所以在某些时候需要使用 ref，是因为模式匹配的时候有可能发生变量的所有权转移
+        // 使用 ref 就是为了避免出现所有权转移
+        ref r => println!("Got a reference to {}", r), // 此时 r 的类型是 `&i32`
+    }
+
+    fn type_id(_: ()) {}
+    // ref 和 & 的关系
+    // ref 是“模式”的一部分，它只能出现在赋值号左边
+    // ref 关键字是“模式”的一部分，不能修饰赋值号右边的值
+    // & 是借用运算符是表达式的一部分，它只能出现在赋值号右边
+    let x = 5_i32; // i32
+    let x = &5_i32; // &i32
+    let ref x = 5_i32; // &i32
+    // type_id(x);
+    let ref x = &5_i32; // &&i32
+    // type_id(x);
+
+    // mut 关键字也可以用于模式绑定中
+    // mut 关键字和 ref 关键字一样，是“模式”的一部分
+    // Rust 中，所有的变量绑定默认都是“不可更改”的
+    // 只有使用了 mut 修饰的变量绑定才有修改数据的能力
+    // 使用了 mut 修饰的变量绑定，可以重新绑定到其他同类型的变量
+    let mut v = vec![1i32, 2, 3];
+    v = vec![4i32, 5, 6];
+    // v = vec![1.0f32, 2, 3]; // 类型不匹配，不能重新绑定
+    println!("{:?}", v);
+
+    // 重新绑定与前面提到的“变量遮蔽”（ shadowing ）是完全不同的作用机制
+    // “重新绑定”要求变量本身有 mut 修饰，并且不能改变这个变量的类型
+    // “变量遮蔽”要求必须重新声明一个新的变量，这个新变量与老变量之间的类型可以毫无关系
+
+    // Rust 在"可变性"方面，默认为不可修改
+    // mut 关键字不仅可以在模式用于修饰变量绑定，还能修饰指针（引用）
+    // mut 修饰变量绑定，与 &mut 型引用，是完全不同的意义
+    let mut x: &mut i32;
+    //  ^1     ^2
+    // 第 1 处 mut，代表这个变量 x 本身可变，因此它能够重新绑定到另外一个变量上去
+    // 具体到这个示例来说，就是指针的指向可以变化
+    // 第 2 处 mut, 修饰的是指针，代表这个指针对于所指向的内存具有修改能力，因此可以
+    // 用 *x = 1; 这样的语句，改变它所指向的内存的值
+
+
+    // 至于为什么有些场景下，我们必须使用 ref 来进行变量绑定
+    // 背后的原因跟 “move” 语义有关
+    let mut x: Option<String> = Some("hello".into());
+    // match x {
+    match &mut x {
+        // Some(ref mut i) => i.push_str(" world"),
+        Some(i) => i.push_str(" world"),
+        None => println!("None"),
+    }
+
+    println!("{:?}", x);
+}
