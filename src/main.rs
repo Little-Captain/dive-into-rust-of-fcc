@@ -127,6 +127,13 @@ fn main_8() {
     first::third();
 }
 
+fn main_9() {
+    use dive_into_rust_of_fcc::ch09::first;
+    first::first();
+    first::second();
+    first::third();
+}
+
 fn main() {
-    main_8();
+    main_9();
 }
