@@ -154,6 +154,7 @@ fn main_11_1() {
 fn main_12() {
     use dive_into_rust_of_fcc::ch12::first;
     first::first();
+    first::second();
 }
 
 fn main() {
