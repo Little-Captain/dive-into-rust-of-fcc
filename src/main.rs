@@ -135,7 +135,14 @@ fn main_9() {
 }
 fn main_11() {
     use dive_into_rust_of_fcc::ch11::first;
+    use dive_into_rust_of_fcc::ch11::second;
     first::first();
+    second::first();
+    second::second();
+    second::third();
+    second::fourth();
+    second::fifth();
+    second::sixth();
 }
 
 fn main() {
