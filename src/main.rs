@@ -159,6 +159,11 @@ fn main_12() {
     first::fourth();
 }
 
+fn main_13() {
+    use dive_into_rust_of_fcc::ch13::first;
+    first::first();
+}
+
 fn main() {
-    main_12();
+    main_13();
 }
