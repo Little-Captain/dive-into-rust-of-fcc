@@ -168,6 +168,11 @@ fn main_13() {
     first::fifth();
 }
 
+fn main_14() {
+    use dive_into_rust_of_fcc::ch14::first;
+    first::first();
+}
+
 fn main() {
-    main_13();
+    main_14();
 }
