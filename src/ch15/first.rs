@@ -250,11 +250,13 @@ pub fn third() {
     // 不像 C/C++，在 Rust 语言中，如果有机会让用户在不用 unsafe 的情况下制造出内存不安全，
     // 这个责任不是由用户来承担，而是应该归因于写编译器或者写库的人。
     // 在 Rust 中，写库的人不需要去用一堆文档来向用户保证内存安全，而是必须要通过编译错误来保证。
+    /*
     #[lang = "unsafe_cell"] // 这个标记意味着这个类型是个特殊类型，是被编译器特别照顾的类型。
     #[stable(fature = "rust1", since = "1.0.0")]
     pub struct UnsafeCell<T: ?Sized> {
         value: T,
     }
+    */
 }
 
 // 总结
