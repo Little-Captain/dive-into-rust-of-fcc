@@ -2,6 +2,9 @@
 // “解引用”(Deref)是“取引用”(Ref)的反操作。
 // 取引用，有 &、&mut 等操作符，对应的，解引用，有 * 操作符，跟 C 语言是一样的。
 
+use std::ops::Deref;
+use std::rc::Rc;
+
 pub fn first() {
     fn test1() {
         let v1 = 1;
@@ -61,9 +64,142 @@ pub fn first() {
 }
 
 // 自动解引用
-pub  fn second() {
+pub fn second() {
+    fn test1() {
+        let s = "hello";
+        println!("length: {}", s.len());
+        println!("length: {}", (&s).len());
+        // 如果使用 &&&&&&&&&&&&&&&&&&&&&&&&&str 类型来调用成员方法，也是可以的。
+        // 原因就是，Rust 编译器做了隐式的 deref 调用，当它找不到这个成员方法的时候，
+        // 会自动尝试使用 deref 方法后再找该方法，一直循环下去。
+        // 编译器在 &&&str 类型里面找不到 len 方法；尝试将它 deref，变成 &&str 类型后
+        // 再寻找 len 方法，还是没找到；继续 deref，变成 &str，现在找到 len 方法了，
+        // 于是就调用这个方法。
+        println!("length: {}", (&&&&&&&&&&&&&&&&&&&&&&&&&s).len());
+        println!("length: {}", str::len(&s));
+        // 自动 deref 的规则是，如果类型 T 可以解引用为 U，即 T: Deref<U>，
+        // 则 &T 可以转为 &U。
+    }
+    test1();
+}
+
+// 自动解引用的用处
+pub fn third() {
+    fn test1() {
+        /*
+        impl<T: ?Sized> Deref for Rc<T> {
+            type Target = T;
+
+            #[inline(always)]
+            fn deref(&self) -> &T {
+                &self.inner().value
+            }
+        }
+        */
+        let s = Rc::new(String::from("hello"));
+        // str 的 bytes 方法
+        println!("{:?}", s.bytes());
+        // s.deref() -> String
+        println!("{:?}", s.deref().bytes());
+        // s.deref().deref() -> str
+        println!("{:?}", s.deref().deref().bytes());
+        // 实际上通过 Rc 类型的变量调用了 str 类型的方法，让这个智能指针透明。
+        // 这就是自动 Deref 的意义。
+    }
+    test1();
+    fn test2() {
+        let s = Rc::new(String::from("hello"));
+        // 下面的写法，在编译器看来没有任何区别
+        println!("length: {}", s.len());
+        println!("length: {}", s.deref().len());
+        println!("length: {}", s.deref().deref().len());
+        println!("length: {}", (*s).len());
+        println!("length: {}", (&*s).len());
+        println!("length: {}", (&**s).len());
+        // String 实现 Deref trait，是为了让 &String 类型的变量可以在必要的时候
+        // 自动转换为 &str 类型。所以 String 类型的变量可以直接调用 str 类型的方法。
+        let s = String::from("hello");
+        println!("len: {:?}", s.bytes());
+        // Vec<T> 类型实现了 Deref trait，目标类型是 [T]，&Vec<T> 类型的变量就可以
+        // 在必要的时候自动转换为 [T] 数组切片类型；
+        // Rc<T> 类型实现了 Deref trait，目标类型是 T，Rc<T> 类型的变量可以直接调用 T 类型的方法。
+    }
+    test2();
+    // 注意： & * 两个操作符连写跟分开写是不同的含义。
+    fn test3() {
+        fn joint() {
+            let s = Box::new(String::new());
+            let p = &*s;
+            println!("{} {}", p, s);
+        }
+        // 编译不通过
+        // fn joint() 是可以直接编译通过的，而 fn separate() 是不能编译通过的。
+        // 因为编译器很聪明，它看到 &* 这两个操作连在一起的时候，会直接把  &*s 表达式理解为
+        // s.deref()，这时候 p 只是 s 的一个借用而已。
+        // 如果把这两个操作分开写，会先执行 *s 把内部的数据 move 出来，再对这个临时变量取引用，
+        // 这时候 s 已经被移走了，生命周期已经结束。
+        // let p = &{*s}; 这种写法也编译不过。这个花括号的存在创建了一个临时的代码块，
+        // 在这个临时代码块内部先执行解引用，同样是 move 语义。
+        // 从这里也可以看到，默认的“取引用”、“解引用”操作是互补抵消的关系，互为逆运算。
+        // 但是，在 Rust 中，只允许自定义“解引用”，不允许自定义“取引用”。
+        // 如果类型有自定义“解引用”，那么对它执行“解引用”和“取引用”就不再是互补抵消的结果了。
+        // 先 & 后 * 以及先 * 后 & 的结果是不同的。
+        /*
+        fn separate() {
+            let s = Box::new(String::new());
+            let tmp = *s;
+            let p = &tmp;
+            println!("{} {}", p, s);
+        }
+        */
+        joint();
+        separate();
+    }
+    test3();
+}
+
+// 有时候需要手动处理
+pub fn fourth() {
+    // 如果智能指针中的方法与它内部成员的方法冲突了，编译器会优先调用当前最匹配的类型，
+    // 而不会执行自动 deref，在这种情况下，就只能手动 deref 来表达的需求了。
+    fn test1() {
+        let s = Rc::new(Rc::new(String::from("hello")));
+        let s1 = s.clone();
+        let ps1 = (*s).clone();
+        let pps1 = (**s).clone();
+    }
+    test1();
+    // 一般情况下，在函数调用的时候，编译器会尝试自动解引用。
+    // 但在某些情况下，编译器不会为自动插入自动解引用的代码。
+    fn test2() {
+        let s = String::new();
+        // match s.deref() {
+        match s.deref() {
+            "" => {}
+            _ => {}
+        }
+        // match 后面的变量类型是 &String，匹配分支的变量类型为 &'static str，
+        // 这种情况下就需要手动完成类型转换了。手动将 &String 类型转换为 &str 类型的办法如下。
+        // 1) match s.deref()。这个方法通过主动调用 deref() 方法达到类型转换的目的。
+        // 此时需要引入 Deref trait 方可通过编译，即加上代码 use std::ops::Deref;。
+        // 2) match &*s。 可以通过 *s 运算符， 也可以强制调用 deref() 方法，与上面的做法一样。
+        // 3) match s.as_ref()。这个方法调用的是标准库中的 std::convert::AsRef 方法，
+        // 这个 trait 存在于 prelude 中，无须手工引人即可使用。
+        // 4) match s.borrow()。这个方法调用的是标准库中的 std::borrow::Borrow 方法。
+        // 要使用它，需要加上代码 use std::borrow::Borrow;。
+        // 5) match &s[..]。这个方案也是可以的，这里利用了 String 重载的 Index 操作。
+    }
+    test2();
+}
+
+// 智能指针
+// Rust 语言提供了所有权、默认 move 语义、借用、生命周期、内部可变性等基础概念。
+// 但这些并不是 Rust 全部的内存管理方式，在这些概念的基础上，还能继续抽象、
+// 封装更多的内存管理方式，而且保证内存安全。
+pub fn fifth() {
     fn test1() {
 
     }
     test1();
 }
+

@@ -185,6 +185,8 @@ fn main_16() {
     use dive_into_rust_of_fcc::ch16::first;
     first::first();
     first::second();
+    first::third();
+    first::fourth();
 }
 
 fn main() {
