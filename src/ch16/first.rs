@@ -153,7 +153,7 @@ pub fn third() {
         }
         */
         joint();
-        separate();
+        // separate();
     }
     test3();
 }
@@ -193,13 +193,30 @@ pub fn fourth() {
 }
 
 // 智能指针
-// Rust 语言提供了所有权、默认 move 语义、借用、生命周期、内部可变性等基础概念。
+// Rust 语言提供了所有权、默认 move 语义，借用、生命周期、内部可变性等基础概念。
 // 但这些并不是 Rust 全部的内存管理方式，在这些概念的基础上，还能继续抽象、
 // 封装更多的内存管理方式，而且保证内存安全。
 pub fn fifth() {
-    fn test1() {
+    // 引用计数
+    // 到目前为止，接触到的示例中都是一块内存总是只有唯一的一个所有者。
+    // 当这个变量绑定自身消亡的时候，这块内存就会被释放。
+    // 引用计数智能指针提供了另外一种选择：一块不可变内存可以有多个所有者，
+    // 当所有的所有者消亡后，这块内存才会被释放。
+    // Rust 中提供的引用计数指针有 std::rc::Rc<T> 类型和 std::sync::Arc<T> 类型。
+    // Rc 类型和 Arc 类型的主要区别是：Rc 类型的引用计数是普通整数操作，只能用在单线程中;
+    // Arc 类型的引用计数是原子操作，可以用在多线程中。 这一点是通过编译器静态检查保证的。
 
+    // Rc 智能指针的用法
+    fn test1() {
+        use std::rc::Rc;
+        struct SharedValue {
+            value: i32
+        }
+        let shared_value: Rc<SharedValue> = Rc::new(SharedValue { value: 32 });
+        let owner1 = shared_value.clone();
+        let owner2 = shared_value.clone();
+        println!("value: {} {}", owner1.value, owner2.value);
+        println!("address: {:p} {:p}", &owner1.value, &owner2.value);
     }
     test1();
 }
-
