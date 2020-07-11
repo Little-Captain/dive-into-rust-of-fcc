@@ -188,6 +188,7 @@ fn main_16() {
     first::second();
     first::third();
     first::fourth();
+    first::fifth();
 }
 
 fn main() {

@@ -212,11 +212,26 @@ pub fn fifth() {
         struct SharedValue {
             value: i32
         }
-        let shared_value: Rc<SharedValue> = Rc::new(SharedValue { value: 32 });
+        let shared_value: Rc<SharedValue> = Rc::new(SharedValue { value: 42 });
         let owner1 = shared_value.clone();
         let owner2 = shared_value.clone();
         println!("value: {} {}", owner1.value, owner2.value);
         println!("address: {:p} {:p}", &owner1.value, &owner2.value);
     }
+    // owner1 owner2 里面包含的数据不仅值是相同的,而且地址也是相同的。
+    // Rc 指针的创建是调用 Rc::new 静态函数，与 Box 类型一致(将来会允许使用 box 关键字创建)。
+    // 如果要创建指向同样内存区域的多个 Rc 指针，需要显式调用 clone 函数。
+    // 请注意, Rc 指针是没有实现 Copy trait 的。 如果使用直接赋值方式，会执行 move 语义,
+    // 导致前一个指针失效，后一个指针开始起作用,而且引用计数值不变。
+    // 如果需要创造新的 Rc 指针,必须手工调用 clone() 函数，此时引用计数值才会加 1。
+    // 当某个 Rc 指针失效,会导致引用计数值减 1。当引用计数值减到 0 的时候，共享内存空间才会被释放。
+    // 它内部包含的数据是“不可变的”,每个 Rc 指针对它指向的内部数据只有读功能，和共享引用 & 一致，
+    // 因此，它是安全的。区别在于，共享引用对数据完全没有所有权，不负责内存的释放，
+    // Rc 指针会在引用计数值减到 0 的时候释放内存。
+    // Rust 里面的 Rc<T> 类型类似于 C++ 里面的 shared_ptr<const T> 类型，且强制不可为空。
+    // Rc 类型重载了“解引用”运算符，而且恰好 Target 类型指定的是 T。
+    // 这就意味着编译器可以将 Rc<T> 类型在必要的时候自动转换为 &T 类型，
+    // 于是它就可以访问 T 的成员变量，调用 T 的成员方法了。因此，它可以被归类为“智能指针”。
+    // 《深入浅出 Rust》 看到 176 页。
     test1();
 }
